@@ -43,13 +43,13 @@ public class MaimClass2 extends Application {
 	private HashMap<Integer, ImageView> life = new HashMap<Integer, ImageView>();
 	private List<GameObject> bullets = new ArrayList<>();
 	private List<GameObject> enemies = new ArrayList<>();
-	private List<GameObject> hotChick = new ArrayList<>();
+	private List<GameObject> Dimonds = new ArrayList<>();
 	private IntegerProperty SCORE = new SimpleIntegerProperty();
 	private IntegerProperty EGGS = new SimpleIntegerProperty();
 	private int LIVES = 3;
-	private int LEVELS = 2;
+	private int LEVELS = 1;
 	static boolean sound = true;
-	private final Integer START_TIME = 50;
+	private final Integer START_TIME = 500;
 	private Integer SECONDS = START_TIME;
 	private Button startbutton, Soundbutton, ExitButton, contButton, pauseButton, restartButton, helpButton, backButton,
 			levelBtn;
@@ -60,16 +60,16 @@ public class MaimClass2 extends Application {
 	private Media shootSound, gameover, GameSoundMedia, chickenSoMedia;
 	private AnimationTimer timer;
 	private Timeline TimeLine = new Timeline();
-	static Image chickenimage = new Image("File:src//main//resources//pic//chicken.gif", 50, 50, true, true);
-	static Image fireIm = new Image("File:src//main//resources//pic//fire.gif", 30, 30, true, true);
-	static Image eggsimage = new Image("File:src//main//resources//pic//eggs.gif", 30, 30, true, true);
-	static Image grilledimg = new Image("File:src//main//resources//pic//dimond.gif", 30, 30, true, true);
-	static Image livesImg = new Image("File:src//main//resources//pic//lives.png", 30, 30, true, true);
-	static Image poopIm = new Image("File:src//main//resources//pic//poop.png", 30, 30, true, true);
-	static Image MonsterImg = new Image("File:src//main//resources//pic//crazyChicken.gif", 200, 200, true, true);
-	static Image imageBackgroundGame = new Image("File:src//main//resources//pic//backgroundGame.png");
+	static Image chickenimage = new Image("File:\\C:\\Users\\alsalam\\Downloads\\chicken.gif", 50, 50, true, true);
+	static Image fireIm = new Image("File:\\C:\\Users\\alsalam\\Downloads\\fire.gif", 30, 30, true, true);
+	static Image eggsimage = new Image("File:\\C:\\Users\\alsalam\\Downloads\\egg.gif", 30, 30, true, true);
+	static Image DimondsImg = new Image("File:\\C:\\Users\\alsalam\\Downloads\\dimond.gif", 30, 30, true, true);
+	static Image livesImg = new Image("File:\\C:\\Users\\alsalam\\Downloads\\lives.png", 30, 30, true, true);
+	static Image poopIm = new Image("File:\\C:\\Users\\alsalam\\Downloads\\poop.png", 30, 30, true, true);
+	static Image MonsterImg = new Image("File:\\C:\\Users\\alsalam\\Downloads\\crazyChicken.gif", 200, 200, true, true);
+	static Image imageBackgroundGame = new Image("File:\\C:\\Users\\alsalam\\Downloads\\backgroundGame.png");
 	static Image helpim = new Image("File:src//main//resources//pic//help.png");
-	static Image imgStart = new Image("File:src//main//resources//pic//backgroundStart.png");
+	static Image imgStart = new Image("File:\\C:\\Users\\alsalam\\Downloads\\backgroundStart.png");
 
 	static final ImageView monster = new ImageView(MonsterImg);
 	Player player = new Player();
@@ -114,8 +114,7 @@ public class MaimClass2 extends Application {
 		Text textscore = new Text();
 		textscore.setFont(new Font("Elephant", 20));
 		textscore.setFill(Color.DARKRED);
-		textscore.setText("Score : [" + SCORE.getValue() + "]");
-
+		textscore.textProperty().bind(SCORE.asString("Score : [%d]"));
 		// add time //
 		timeLabel = new Label();
 		timeLabel.setFont(new Font("Elephant", 20));
@@ -165,9 +164,9 @@ public class MaimClass2 extends Application {
 		// HBox
 		boxStarts = new VBox();
 		boxStarts.setLayoutX(460);
-		boxStarts.setLayoutY(365);
+		boxStarts.setLayoutY(380);
 		HBox hbo = effect_text("Chickens Hunting");
-
+		hbo.setBackground(new Background(new BackgroundFill(Color.KHAKI, null, null)));
 		// add button sound
 		Soundbutton = new Button(" 🕪 ");
 		Soundbutton.setLayoutX(550);
@@ -253,7 +252,7 @@ public class MaimClass2 extends Application {
 					fire.setalive(false);
 					enemy.setalive(false);
 					if (enemy instanceof Birds) {
-						addHotChick(new hotChick(), enemy.getView().getTranslateX(), enemy.getView().getTranslateY());
+						addDimond(new Dimond(), enemy.getView().getTranslateX(), enemy.getView().getTranslateY());
 						SCORE.set(SCORE.get() + 1);
 						shootMediaPlayer = new MediaPlayer(shootSound);
 						shootMediaPlayer.play();
@@ -309,8 +308,8 @@ public class MaimClass2 extends Application {
 		}
 		bullets.removeIf(GameObject::isDead);
 		enemies.removeIf(GameObject::isDead);
-		hotChick.removeIf(GameObject::isDead);
-		hotChick.forEach(GameObject::update);
+		Dimonds.removeIf(GameObject::isDead);
+		Dimonds.forEach(GameObject::update);
 		bullets.forEach(GameObject::update);
 		enemies.forEach(GameObject::update);
 	}
@@ -341,9 +340,9 @@ public class MaimClass2 extends Application {
 		addGameObject(poop, x, y);
 	}
 
-	private void addHotChick(GameObject HotChick, double x, double y) {
-		hotChick.add(HotChick);
-		addGameObject(HotChick, x, y);
+	private void addDimond(GameObject dimond, double x, double y) {
+		Dimonds.add(dimond);
+		addGameObject(dimond, x, y);
 	}
 
 	public boolean isPressed(KeyCode key) {
@@ -371,10 +370,10 @@ public class MaimClass2 extends Application {
 		}
 	}
 
-	private static class hotChick extends GameObject {
+	private static class Dimond extends GameObject {
 
-		hotChick() {
-			super(new ImageView(grilledimg));
+		Dimond() {
+			super(new ImageView(DimondsImg));
 		}
 	}
 
@@ -458,7 +457,7 @@ public class MaimClass2 extends Application {
 					en.getView().setTranslateY((en.getView().getTranslateY() + 50) % 400);
 				}
 			}
-			for (GameObject hotChick : hotChick) {
+			for (GameObject hotChick : Dimonds) {
 				hotChick.setVelocity(new Point2D(-1, 3).multiply(7));
 			}
 		}));
@@ -486,9 +485,10 @@ public class MaimClass2 extends Application {
 		});
 		restartButton.setOnAction(e -> {
 			restart(GameStage);
+			
 		});
 		levelBtn.setOnAction(e -> {
-			++LEVELS;
+			LEVELS++;
 			cleanup();
 			startGame(this.GameStage);
 			LevelUp.setVisible(false);
@@ -509,6 +509,7 @@ public class MaimClass2 extends Application {
 		Gamesound.setAutoPlay(true);
 		startbutton.setOnAction(e -> {
 			startGame(primaryStage);
+			LEVELS=1;
 		});
 		HelpScene = new Scene(rootHelp, 600, 490);
 		helpButton.setOnAction(e -> primaryStage.setScene(HelpScene));
